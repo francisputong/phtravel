@@ -1,0 +1,18 @@
+{
+    "expo": {
+        "scheme": "acme",
+        "web": {
+          "bundler": "metro"
+        },
+        "name": "phtravel",
+        "slug": "phtravel",
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.francis.phtravel",
+            "config": {
+                "googleMapsApiKey": "AIzaSyAwDHxcPhySx-LxFOA2SODOLRSt2p8Fcms"
+            }
+        }
+    }
+}
+  
