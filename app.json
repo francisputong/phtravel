@@ -10,7 +10,7 @@
             "supportsTablet": true,
             "bundleIdentifier": "com.francis.phtravel",
             "config": {
-                "googleMapsApiKey": "AIzaSyAwDHxcPhySx-LxFOA2SODOLRSt2p8Fcms"
+                "googleMapsApiKey": ""
             }
         }
     }

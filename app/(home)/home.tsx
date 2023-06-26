@@ -12,6 +12,9 @@ import Map from '../../components/Map/Map';
 import styles from './home.style';
 import Search from '../../components/Search/Search';
 import phProvinces from '../../philippines-provinces.json';
+import useMap from '../../hooks/useMap';
+import MapView from 'react-native-maps';
+import { MapLocation } from '../../types';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -21,19 +24,28 @@ const home = ({}: Props) => {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
+    const mapRef = useRef<MapView | null>(null);
+
+    const { handleAnimateToRegion } = useMap(mapRef);
+
     useEffect(() => {
         if (isSearchFocused) {
             bottomSheetRef.current?.expand();
         }
     }, [isSearchFocused]);
 
-    const snapPoints = useMemo(() => [100, windowHeight - 50], []);
+    const snapPoints = useMemo(() => [100, windowHeight - 100], []);
 
     const handleSheetChanges = useCallback((index: number) => {
         if (index === 1) {
             setIsSearchFocused(false);
         }
     }, []);
+
+    const handleCloseSheetAndAnimate = (location: MapLocation) => {
+        handleAnimateToRegion(location);
+        bottomSheetRef.current?.collapse();
+    };
 
     return (
         <View style={styles.container}>
@@ -44,7 +56,10 @@ const home = ({}: Props) => {
                     headerTitle: '',
                 }}
             />
-            <Map />
+            <Map
+                mapRef={mapRef}
+                handleAnimateToRegion={handleAnimateToRegion}
+            />
             <BottomSheet
                 keyboardBehavior='extend'
                 ref={bottomSheetRef}
@@ -55,6 +70,7 @@ const home = ({}: Props) => {
                 <Search
                     handleFocus={setIsSearchFocused}
                     data={phProvinces.provinces}
+                    onSelect={handleCloseSheetAndAnimate}
                 />
             </BottomSheet>
         </View>

@@ -4,6 +4,8 @@ const COLORS = {
     tertiary: '#FF7754',
 
     gray: '#F2F2F2',
+    darkGray: '#808080',
+    white: '#FFF',
 };
 
 export { COLORS };
