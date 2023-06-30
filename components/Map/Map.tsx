@@ -1,7 +1,7 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import phProvinces from '../../philippines-provinces.json';
 import { PH_COORDINATES } from '../../constants';
 import { MapLocation } from '../../types';
+import { GOOGLE_PLACE_API_URL } from '@env';
 
 type Props = {
     mapRef: React.MutableRefObject<MapView | null>;
@@ -9,16 +9,16 @@ type Props = {
 };
 
 const Map = ({ mapRef, handleAnimateToRegion }: Props) => {
-    const renderMarkers = () => {
-        return phProvinces.provinces.map((province, index) => (
-            <Marker
-                onPress={() => handleAnimateToRegion(province)}
-                key={index}
-                coordinate={province.coordinate}
-                title={province.name}
-            />
-        ));
-    };
+    // const renderMarkers = () => {
+    //     return phProvinces.provinces.map((province, index) => (
+    //         <Marker
+    //             onPress={() => handleAnimateToRegion(province)}
+    //             key={index}
+    //             coordinate={province.coordinate}
+    //             title={province.name}
+    //         />
+    //     ));
+    // };
 
     return (
         <MapView
@@ -28,7 +28,7 @@ const Map = ({ mapRef, handleAnimateToRegion }: Props) => {
             initialRegion={PH_COORDINATES}
             style={{ width: '100%', height: '100%' }}
         >
-            {renderMarkers()}
+            {/* {renderMarkers()} */}
         </MapView>
     );
 };

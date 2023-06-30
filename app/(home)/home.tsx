@@ -11,7 +11,6 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import Map from '../../components/Map/Map';
 import styles from './home.style';
 import Search from '../../components/Search/Search';
-import phProvinces from '../../philippines-provinces.json';
 import useMap from '../../hooks/useMap';
 import MapView from 'react-native-maps';
 import { MapLocation } from '../../types';
@@ -69,7 +68,6 @@ const home = ({}: Props) => {
             >
                 <Search
                     handleFocus={setIsSearchFocused}
-                    data={phProvinces.provinces}
                     onSelect={handleCloseSheetAndAnimate}
                 />
             </BottomSheet>

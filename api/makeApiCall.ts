@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+// import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { GOOGLE_PLACE_API_URL } from '@env';
 
 type Response<T> = {
     errorCode?: string;
@@ -8,56 +9,56 @@ type Response<T> = {
     data: T;
 };
 
-export interface UseApiRequestOptions<T>
-    extends UseQueryOptions<AxiosResponse<Response<T>>> {
-    method?: Method;
-    data?: T;
-}
+// export interface UseApiRequestOptions<T>
+//     extends UseQueryOptions<AxiosResponse<Response<T>>> {
+//     method?: Method;
+//     data?: T;
+// }
+const api = axios.create();
 
-export const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+const ApiUrls = {
+    google: GOOGLE_PLACE_API_URL,
+    host: '',
+};
 
-/**
- * Method for making ajax calls to the site's api
- * @param {String} endpoint - the endpoint url
- * @param {Method | undefined} method api methid POST | GET | DELETE | PUT
- * @param {Object|String} [data] - key:value pairs of the data to be sent to server
- * @returns {Promise}
- */
 export default async function makeApiRequest<T>(
     endpoint: string,
     method?: Method,
-    data?: any | undefined
+    data?: any | undefined,
+    params?: Record<any, any>,
+    type: 'google' | 'host' = 'host'
 ) {
     // const auth = getAuth();
 
     const request: AxiosRequestConfig = {
+        baseURL: ApiUrls[type],
         method: method || 'GET',
         url: endpoint,
         data: data || '',
+        params: params || {},
         headers: {
-            'Content-Type': 'application/json',
             // authorization: `Bearer ${auth ? auth.token : ''}`
         },
     };
 
-    const response: AxiosResponse<Response<T>> = await api(request);
+    const response: AxiosResponse<T> = await api(request);
+    // console.log('TEST');
+    // const response: AxiosResponse<T> = await axios.get(
+    //     GOOGLE_PLACE_API_URL + request.url,
+    //     { params: params }
+    // );
 
     return response;
 }
 
-export const useReactQueryRequest = <T>(
-    key: string,
-    endpoint: string,
-    { method, data, ...options }: UseApiRequestOptions<T> = {}
-) => {
-    return useQuery<AxiosResponse<Response<T>>>(
-        [key, endpoint, method, data],
-        () => makeApiRequest<T>(endpoint, method, data),
-        options
-    );
-};
+// export const useReactQueryRequest = <T>(
+//     key: string,
+//     endpoint: string,
+//     { method, data, ...options }: UseApiRequestOptions<T> = {}
+// ) => {
+//     return useQuery<AxiosResponse<Response<T>>>(
+//         [key, endpoint, method, data],
+//         () => makeApiRequest<T>(endpoint, method, data),
+//         options
+//     );
+// };

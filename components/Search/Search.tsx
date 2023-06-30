@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
     FlatList,
     TouchableOpacity,
@@ -9,24 +9,22 @@ import {
     TextInput,
 } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
 import styles from './search.style';
-import type {
-    MapLocation,
-    PlaceAutocompleteResponse,
-    PlacePrediction,
-} from '../../types';
+import type { MapLocation } from '../../types';
 import useDebounce from '../../hooks/useDebounce';
+import {
+    getGooglePlaceAutocomplete,
+    getGooglePlaceDetails,
+} from '../../api/googlePlace/googlePlace';
+import { PlacePrediction } from '../../api/googlePlace/types';
 
 type Props = {
-    data: MapLocation[];
     handleFocus: (isFocused: boolean) => void;
     onSelect: (data: MapLocation) => void;
 };
 
-const Search = ({ data, handleFocus, onSelect }: Props) => {
+const Search = ({ handleFocus, onSelect }: Props) => {
     const [searchText, setSearchText] = useState('');
     const [isAtStart, setIsAtStart] = useState(true);
     const [filteredData, setFilteredData] = useState<PlacePrediction[]>([]);
@@ -35,43 +33,17 @@ const Search = ({ data, handleFocus, onSelect }: Props) => {
 
     const handleSearch = async (text: string) => {
         setSearchText(text);
-        // try {
-        //     const response = await axios.get(
-        //         `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyAwDHxcPhySx-LxFOA2SODOLRSt2p8Fcms&input=${text}&types=(cities)&language=en&components=country:ph`
-        //     );
-
-        //     console.log(response);
-        // } catch (error) {
-        //     console.log(error);
-        // }
-
-        // const filtered = data.filter((item) =>
-        //     item.name.toLowerCase().includes(text.toLowerCase())
-        // );
-
-        // setFilteredData(filtered);
     };
 
     const handleSearchPlace = async (searchQuery: string) => {
         if (!searchQuery) return;
 
         try {
-            const response = await axios.get<PlaceAutocompleteResponse>(
-                `https://maps.googleapis.com/maps/api/place/autocomplete/json`,
-                {
-                    params: {
-                        input: searchQuery,
-                        types: 'administrative_area_level_3|locality|tourist_attraction',
-                        language: 'en',
-                        components: 'country:ph',
-                        key: '',
-                    },
-                }
-            );
-            console.log(response);
-            setFilteredData(response.data.predictions);
+            const { data } = await getGooglePlaceAutocomplete(searchQuery);
+
+            setFilteredData(data.predictions);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -88,18 +60,9 @@ const Search = ({ data, handleFocus, onSelect }: Props) => {
     const handleSelectItem = async (item: PlacePrediction) => {
         // setSearchText(item);
         // onSelect(item);
-        console.log(item.place_id);
         try {
-            const response = await axios.get<any>(
-                `https://maps.googleapis.com/maps/api/place/details/json`,
-                {
-                    params: {
-                        placeid: item.place_id,
-                        key: '',
-                    },
-                }
-            );
-            console.log(response);
+            const response = await getGooglePlaceDetails(item.place_id);
+
             // setFilteredData(response.data.predictions);
         } catch (error) {
             console.log(error);
