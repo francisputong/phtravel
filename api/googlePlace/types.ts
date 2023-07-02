@@ -15,7 +15,7 @@ type StructuredFormatting = {
     secondary_text: string;
 };
 
-export type AddressComponent = {
+type AddressComponent = {
     long_name: string;
     short_name: string;
     types: string[];
@@ -81,7 +81,7 @@ type Review = {
     aspect_ratings: ReviewAspectRating[];
 };
 
-type PlaceDetailsResult = {
+export type PlaceDetailsResult = {
     address_components: AddressComponent[];
     formatted_address: string;
     geometry: Geometry;

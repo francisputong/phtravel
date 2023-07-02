@@ -1,4 +1,4 @@
-import { View, Keyboard, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import React, {
     useCallback,
     useEffect,
@@ -6,14 +6,15 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
+import MapView from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Map from '../../components/Map/Map';
 import styles from './home.style';
 import Search from '../../components/Search/Search';
 import useMap from '../../hooks/useMap';
-import MapView from 'react-native-maps';
-import { MapLocation } from '../../types';
+import type { PlaceDetailsResult } from '../../api/googlePlace/types';
+import type { PlaceMarker } from '../../types';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -21,6 +22,9 @@ type Props = {};
 
 const home = ({}: Props) => {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [currentMarker, setCurrentMarker] = useState<PlaceMarker | null>(
+        null
+    );
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     const mapRef = useRef<MapView | null>(null);
@@ -41,8 +45,15 @@ const home = ({}: Props) => {
         }
     }, []);
 
-    const handleCloseSheetAndAnimate = (location: MapLocation) => {
-        handleAnimateToRegion(location);
+    const handleCloseSheetAndAnimate = (data: PlaceDetailsResult) => {
+        const { lat, lng } = data.geometry.location;
+
+        handleAnimateToRegion({ latitude: lat, longitude: lng });
+        setCurrentMarker({
+            name: data.address_components[1].long_name,
+            coordinate: { latitude: lat, longitude: lng },
+        });
+
         bottomSheetRef.current?.collapse();
     };
 
@@ -57,6 +68,8 @@ const home = ({}: Props) => {
             />
             <Map
                 mapRef={mapRef}
+                currentMarker={currentMarker}
+                // selectedPlaceDetails={}
                 handleAnimateToRegion={handleAnimateToRegion}
             />
             <BottomSheet

@@ -11,17 +11,19 @@ import {
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './search.style';
-import type { MapLocation } from '../../types';
 import useDebounce from '../../hooks/useDebounce';
 import {
     getGooglePlaceAutocomplete,
     getGooglePlaceDetails,
 } from '../../api/googlePlace/googlePlace';
-import { PlacePrediction } from '../../api/googlePlace/types';
+import type {
+    PlaceDetailsResult,
+    PlacePrediction,
+} from '../../api/googlePlace/types';
 
 type Props = {
     handleFocus: (isFocused: boolean) => void;
-    onSelect: (data: MapLocation) => void;
+    onSelect: (details: PlaceDetailsResult) => void;
 };
 
 const Search = ({ handleFocus, onSelect }: Props) => {
@@ -43,7 +45,7 @@ const Search = ({ handleFocus, onSelect }: Props) => {
 
             setFilteredData(data.predictions);
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     };
 
@@ -59,11 +61,11 @@ const Search = ({ handleFocus, onSelect }: Props) => {
 
     const handleSelectItem = async (item: PlacePrediction) => {
         // setSearchText(item);
-        // onSelect(item);
         try {
-            const response = await getGooglePlaceDetails(item.place_id);
-
-            // setFilteredData(response.data.predictions);
+            const {
+                data: { result },
+            } = await getGooglePlaceDetails(item.place_id);
+            onSelect(result);
         } catch (error) {
             console.log(error);
         }
@@ -86,7 +88,7 @@ const Search = ({ handleFocus, onSelect }: Props) => {
                         color='#888'
                         style={styles.searchIcon}
                     />
-                    <TextInput
+                    <BottomSheetTextInput
                         style={styles.input}
                         placeholder='Search for a province'
                         placeholderTextColor='#C0C0C0'

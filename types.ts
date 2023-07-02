@@ -1,6 +1,5 @@
-export type MapLocation = {
+export type PlaceMarker = {
     name: string;
-    capital: string;
     coordinate: {
         latitude: number;
         longitude: number;
