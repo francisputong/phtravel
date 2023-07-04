@@ -24,9 +24,16 @@ import type {
 type Props = {
     handleFocus: (isFocused: boolean) => void;
     onSelect: (details: PlaceDetailsResult) => void;
+    handleBottomSheetCollapse: () => void;
+    isBottomSheetOpen: boolean;
 };
 
-const Search = ({ handleFocus, onSelect }: Props) => {
+const Search = ({
+    isBottomSheetOpen,
+    handleFocus,
+    handleBottomSheetCollapse,
+    onSelect,
+}: Props) => {
     const [searchText, setSearchText] = useState('');
     const [isAtStart, setIsAtStart] = useState(true);
     const [filteredData, setFilteredData] = useState<PlacePrediction[]>([]);
@@ -82,18 +89,30 @@ const Search = ({ handleFocus, onSelect }: Props) => {
                 ]}
             >
                 <View style={[styles.inputContainer]}>
-                    <Ionicons
-                        name='search'
-                        size={24}
-                        color='#888'
-                        style={styles.searchIcon}
-                    />
+                    {isBottomSheetOpen ? (
+                        <TouchableOpacity onPress={handleBottomSheetCollapse}>
+                            <Ionicons
+                                name='chevron-back-sharp'
+                                size={24}
+                                color='#888'
+                                style={styles.searchIcon}
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <Ionicons
+                            name='search'
+                            size={24}
+                            color='#888'
+                            style={styles.searchIcon}
+                        />
+                    )}
+
                     <BottomSheetTextInput
                         style={styles.input}
                         placeholder='Search for a province'
                         placeholderTextColor='#C0C0C0'
                         onFocus={() => handleFocus(true)}
-                        onBlur={() => handleFocus(false)}
+                        // onBlur={() => handleFocus(false)}
                         onChangeText={handleSearch}
                         value={searchText}
                     />

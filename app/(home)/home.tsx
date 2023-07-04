@@ -1,4 +1,4 @@
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Keyboard, TouchableOpacity } from 'react-native';
 import React, {
     useCallback,
     useEffect,
@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react';
 import { Stack } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Map from '../../components/Map/Map';
@@ -15,6 +16,7 @@ import Search from '../../components/Search/Search';
 import useMap from '../../hooks/useMap';
 import type { PlaceDetailsResult } from '../../api/googlePlace/types';
 import type { PlaceMarker } from '../../types';
+import AppButton from '../../components/common/Button/Button';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -41,9 +43,15 @@ const home = ({}: Props) => {
 
     const handleSheetChanges = useCallback((index: number) => {
         if (index === 1) {
-            setIsSearchFocused(false);
+            // setIsSearchFocused(false);
         }
     }, []);
+
+    const handleBottomSheetCollapse = () => {
+        Keyboard.dismiss();
+        setIsSearchFocused(false);
+        bottomSheetRef.current?.collapse();
+    };
 
     const handleCloseSheetAndAnimate = (data: PlaceDetailsResult) => {
         const { lat, lng } = data.geometry.location;
@@ -54,24 +62,61 @@ const home = ({}: Props) => {
             coordinate: { latitude: lat, longitude: lng },
         });
 
-        bottomSheetRef.current?.collapse();
+        handleBottomSheetCollapse();
     };
 
     return (
         <View style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerShadowVisible: false,
-                    headerTransparent: true,
-                    headerTitle: '',
+                    headerTransparent: currentMarker ? false : true,
+                    headerTitle: currentMarker?.name || '',
+                    headerStyle: {
+                        backgroundColor: currentMarker
+                            ? 'white'
+                            : 'transparent',
+                    },
+                    headerTitleStyle: { color: 'black' },
+                    headerLeft: () => {
+                        return currentMarker ? (
+                            <TouchableOpacity
+                                onPress={() => setCurrentMarker(null)}
+                            >
+                                <Ionicons
+                                    name='chevron-back-sharp'
+                                    size={24}
+                                    color='#888'
+                                    style={{}}
+                                />
+                            </TouchableOpacity>
+                        ) : null;
+                    },
                 }}
             />
+
             <Map
                 mapRef={mapRef}
                 currentMarker={currentMarker}
                 // selectedPlaceDetails={}
                 handleAnimateToRegion={handleAnimateToRegion}
             />
+            {currentMarker && (
+                <View style={styles.buttonsContainer}>
+                    <AppButton
+                        style={styles.startButton}
+                        size='medium'
+                        title='Track Spend'
+                        onPress={() => console.log('d')}
+                    />
+                    <AppButton
+                        style={styles.startButton}
+                        size='medium'
+                        color='secondary3'
+                        title='Browse Prices'
+                        onPress={() => console.log('d')}
+                    />
+                </View>
+            )}
             <BottomSheet
                 keyboardBehavior='extend'
                 ref={bottomSheetRef}
@@ -80,6 +125,8 @@ const home = ({}: Props) => {
                 onChange={handleSheetChanges}
             >
                 <Search
+                    isBottomSheetOpen={isSearchFocused}
+                    handleBottomSheetCollapse={handleBottomSheetCollapse}
                     handleFocus={setIsSearchFocused}
                     onSelect={handleCloseSheetAndAnimate}
                 />

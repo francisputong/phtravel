@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         backgroundColor: '#fff',
     },
     headerWithBottomBorder: {
-        borderBottomColor: COLORS.darkGray,
-        shadowColor: COLORS.darkGray,
+        borderBottomColor: COLORS.divider,
+        shadowColor: COLORS.divider,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.4,
         shadowRadius: 3,
