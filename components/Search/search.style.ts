@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     headerWithoutBottomBorder: {
-        borderBottomColor: COLORS.white,
+        borderBottomColor: COLORS.light,
     },
     inputContainer: {
         flexDirection: 'row',

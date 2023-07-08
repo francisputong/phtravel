@@ -24,11 +24,11 @@ type Props = {
     handleFocus: (isFocused: boolean) => void;
     onSelect: (details: PlaceDetailsResult) => void;
     handleBottomSheetCollapse: () => void;
-    isBottomSheetOpen: boolean;
+    isBottomSheetCollapsed: boolean;
 };
 
 const Search = ({
-    isBottomSheetOpen,
+    isBottomSheetCollapsed,
     handleFocus,
     handleBottomSheetCollapse,
     onSelect,
@@ -77,7 +77,7 @@ const Search = ({
             console.log(error);
         }
     };
-    console.log(searchText);
+
     return (
         <View style={styles.container}>
             <View
@@ -89,7 +89,7 @@ const Search = ({
                 ]}
             >
                 <View style={[styles.inputContainer]}>
-                    {isBottomSheetOpen ? (
+                    {!isBottomSheetCollapsed ? (
                         <TouchableOpacity onPress={handleBottomSheetCollapse}>
                             <Ionicons
                                 name='chevron-back-sharp'

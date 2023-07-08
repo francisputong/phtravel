@@ -1,11 +1,5 @@
 import { View, Dimensions, Keyboard, TouchableOpacity } from 'react-native';
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Stack } from 'expo-router';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
@@ -17,18 +11,22 @@ import useMap from '../../hooks/useMap';
 import AppButton from '../../components/common/Button/Button';
 import type { PlaceDetailsResult } from '../../api/googlePlace/types';
 import type { PlaceMarker } from '../../types';
-import Typography from '../../components/common/Typography/Typography';
+import BrowsePrices from '../../components/BrowsePrices/BrowsePrices';
 
 const { height: windowHeight } = Dimensions.get('window');
 
 type Props = {};
 
+type BottomSheetContent = 'search' | 'browse';
+
 const home = ({}: Props) => {
-    const [isBottomSheetCollapsed, setIsBottomSheetCollapsed] = useState(false);
+    const [isBottomSheetCollapsed, setIsBottomSheetCollapsed] = useState(true);
     const [currentMarker, setCurrentMarker] = useState<PlaceMarker | null>(
         null
     );
     const [isTracking, setIsTracking] = useState(false);
+    const [bottomSheetContent, setBottomSheetContent] =
+        useState<BottomSheetContent>('search');
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -37,8 +35,10 @@ const home = ({}: Props) => {
     const { handleAnimateToRegion } = useMap(mapRef);
 
     useEffect(() => {
-        if (isBottomSheetCollapsed) {
+        if (!isBottomSheetCollapsed) {
             bottomSheetRef.current?.expand();
+        } else {
+            bottomSheetRef.current?.collapse();
         }
     }, [isBottomSheetCollapsed]);
 
@@ -46,11 +46,14 @@ const home = ({}: Props) => {
 
     const handleBottomSheetCollapse = () => {
         Keyboard.dismiss();
-        setIsBottomSheetCollapsed(false);
-        bottomSheetRef.current?.collapse();
+        setIsBottomSheetCollapsed(true);
+
+        if (currentMarker) setBottomSheetContent('browse');
     };
 
     const handleCloseSheetAndAnimate = (data: PlaceDetailsResult) => {
+        setBottomSheetContent('browse');
+
         const { lat, lng } = data.geometry.location;
 
         handleAnimateToRegion({ latitude: lat, longitude: lng });
@@ -69,6 +72,17 @@ const home = ({}: Props) => {
     const handleHeaderBack = () => {
         setIsTracking(false);
         setCurrentMarker(null);
+        setBottomSheetContent('search');
+    };
+
+    const handleOpenSearch = () => {
+        setBottomSheetContent('search');
+        setIsBottomSheetCollapsed((isCollapsed) => !isCollapsed);
+    };
+
+    const handleBrowsePrices = () => {
+        setBottomSheetContent('browse');
+        setIsBottomSheetCollapsed((isCollapsed) => !isCollapsed);
     };
 
     return (
@@ -86,11 +100,11 @@ const home = ({}: Props) => {
                     headerLeft: () => {
                         return currentMarker ? (
                             <TouchableOpacity onPress={handleHeaderBack}>
-                                <Ionicons
-                                    name='chevron-back-sharp'
+                                <FontAwesome
+                                    style={styles.searchIcon}
+                                    name='chevron-left'
                                     size={24}
                                     color='#888'
-                                    style={{}}
                                 />
                             </TouchableOpacity>
                         ) : null;
@@ -120,53 +134,17 @@ const home = ({}: Props) => {
                 index={0}
                 snapPoints={snapPoints}
             >
-                {!isBottomSheetCollapsed && currentMarker ? (
-                    <View style={styles.trackingContainer}>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setIsBottomSheetCollapsed(
-                                    (isCollapsed) => !isCollapsed
-                                )
-                            }
-                        >
-                            <FontAwesome
-                                style={styles.searchIcon}
-                                name='search'
-                                size={24}
-                                color='#888'
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setIsBottomSheetCollapsed(
-                                    (isCollapsed) => !isCollapsed
-                                )
-                            }
-                        >
-                            <Typography variant='subheading'>
-                                Browse Prices
-                            </Typography>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setIsBottomSheetCollapsed(
-                                    (isCollapsed) => !isCollapsed
-                                )
-                            }
-                        >
-                            <FontAwesome
-                                style={styles.searchIcon}
-                                name='chevron-up'
-                                size={24}
-                                color='#888'
-                            />
-                        </TouchableOpacity>
-                    </View>
+                {bottomSheetContent === 'browse' ? (
+                    <BrowsePrices
+                        isBottomSheetCollapsed={isBottomSheetCollapsed}
+                        handleBrowsePrices={handleBrowsePrices}
+                        handleOpenSearch={handleOpenSearch}
+                    />
                 ) : (
                     <Search
-                        isBottomSheetOpen={isBottomSheetCollapsed}
+                        isBottomSheetCollapsed={isBottomSheetCollapsed}
                         handleBottomSheetCollapse={handleBottomSheetCollapse}
-                        handleFocus={setIsBottomSheetCollapsed}
+                        handleFocus={handleOpenSearch}
                         onSelect={handleCloseSheetAndAnimate}
                     />
                 )}
