@@ -6,10 +6,9 @@ import {
     Text,
     NativeSyntheticEvent,
     NativeScrollEvent,
-    TextInput,
 } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import styles from './search.style';
 import useDebounce from '../../hooks/useDebounce';
 import {
@@ -73,11 +72,12 @@ const Search = ({
                 data: { result },
             } = await getGooglePlaceDetails(item.place_id);
             onSelect(result);
+            setSearchText('');
         } catch (error) {
             console.log(error);
         }
     };
-
+    console.log(searchText);
     return (
         <View style={styles.container}>
             <View
@@ -99,7 +99,7 @@ const Search = ({
                             />
                         </TouchableOpacity>
                     ) : (
-                        <Ionicons
+                        <FontAwesome
                             name='search'
                             size={24}
                             color='#888'
@@ -109,7 +109,7 @@ const Search = ({
 
                     <BottomSheetTextInput
                         style={styles.input}
-                        placeholder='Search for a province'
+                        placeholder='Search for a place'
                         placeholderTextColor='#C0C0C0'
                         onFocus={() => handleFocus(true)}
                         // onBlur={() => handleFocus(false)}

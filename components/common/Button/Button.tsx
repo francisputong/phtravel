@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, TextStyle, ViewStyle } from 'react-native';
 import styles from './buttons.style';
 import { COLORS } from '../../../constants';
 import { ButtonColor, ButtonSize } from './Button.types';
+import Typography from '../Typography/Typography';
 
 interface ButtonProps {
     title: string;
@@ -29,11 +30,13 @@ const Button: React.FC<ButtonProps> = ({
         getSizeStyle(size),
         style,
     ];
-    const textStyles = [styles.buttonText, textStyle];
+    const textStyles = [textStyle || {}];
 
     return (
         <TouchableOpacity style={buttonStyles} onPress={onPress}>
-            <Text style={textStyles}>{title}</Text>
+            <Typography color='light' variant='subheading' style={textStyles}>
+                {title}
+            </Typography>
         </TouchableOpacity>
     );
 };

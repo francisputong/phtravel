@@ -24,11 +24,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         borderRadius: 12,
     },
-    buttonText: {
-        color: COLORS.white,
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
+    // buttonText: {
+    //     fontSize: 20,
+    //     fontWeight: 'bold',
+    // },
 });
 
 export default styles;

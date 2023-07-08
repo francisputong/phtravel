@@ -1,6 +1,5 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { PH_COORDINATES } from '../../constants';
-import { GOOGLE_PLACE_API_URL } from '@env';
 import { PlaceMarker } from '../../types';
 
 type Props = {

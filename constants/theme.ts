@@ -6,9 +6,9 @@ const COLORS = {
     secondary4: '#CCCCCC',
 
     gray: '#F2F2F2',
-    darkGray: '#333333',
+    darkGray: '#3B4948', //#333333
     divider: '#E0E0E0',
-    white: '#FFF',
+    light: '#FFFFFF',
 } as const;
 
 export { COLORS };

@@ -15,7 +15,17 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     startButton: {
-        width: '48%',
+        width: '100%',
+    },
+    trackingContainer: {
+        width: '90%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        alignSelf: 'center',
+    },
+    searchIcon: {
+        // padding: 5,
     },
 });
 
