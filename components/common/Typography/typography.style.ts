@@ -10,9 +10,10 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 24,
-        fontWeight: 'bold',
     },
-    subheading: { fontSize: 18, fontWeight: '600' },
+    subheading: {
+        fontSize: 18,
+    },
     body: {
         fontSize: 16,
     },

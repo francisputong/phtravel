@@ -1,3 +1,5 @@
 export type TypographyVariant = 'heading' | 'subheading' | 'body';
 
-export type TypographyColor = 'light' | 'darkGray';
+export type TypographyColor = 'primary' | 'light' | 'darkGray';
+
+export type TypographyWeight = 'Regular' | 'Medium' | 'Bold';

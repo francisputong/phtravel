@@ -1,6 +1,17 @@
 import { Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
 
 const Layout = () => {
+    const [fontsLoaded] = useFonts({
+        MontserratRegular: require('../assets/fonts/Montserrat-Regular.ttf'),
+        MontserratMedium: require('../assets/fonts/Montserrat-Medium.ttf'),
+        MontserratBold: require('../assets/fonts/Montserrat-Bold.ttf'),
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
+
     return (
         <Stack initialRouteName='home'>
             <Stack.Screen

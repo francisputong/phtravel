@@ -37,6 +37,7 @@ const Button: React.FC<ButtonProps> = ({
         <TouchableOpacity style={buttonStyles} onPress={onPress}>
             <Typography
                 color='light'
+                weight='Bold'
                 variant='subheading'
                 style={[textStyle || {}]}
             >
