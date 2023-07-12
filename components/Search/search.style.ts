@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         width: '100%',
-        // color: D,
     },
     dropdownContainer: {
         width: '100%',

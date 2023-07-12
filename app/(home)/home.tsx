@@ -1,7 +1,7 @@
 import { View, Dimensions, Keyboard, TouchableOpacity } from 'react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Stack } from 'expo-router';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Stack, useRouter } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Map from '../../components/Map/Map';
@@ -12,6 +12,7 @@ import AppButton from '../../components/common/Button/Button';
 import type { PlaceDetailsResult } from '../../api/googlePlace/types';
 import type { PlaceMarker } from '../../types';
 import BrowsePrices from '../../components/BrowsePrices/BrowsePrices';
+import { COLORS } from '../../constants';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -19,7 +20,7 @@ type Props = {};
 
 type BottomSheetContent = 'search' | 'browse';
 
-const home = ({}: Props) => {
+const Home = ({}: Props) => {
     const [isBottomSheetCollapsed, setIsBottomSheetCollapsed] = useState(true);
     const [currentMarker, setCurrentMarker] = useState<PlaceMarker | null>(
         null
@@ -33,6 +34,7 @@ const home = ({}: Props) => {
     const mapRef = useRef<MapView | null>(null);
 
     const { handleAnimateToRegion } = useMap(mapRef);
+    const router = useRouter();
 
     useEffect(() => {
         if (!isBottomSheetCollapsed) {
@@ -85,6 +87,10 @@ const home = ({}: Props) => {
         setIsBottomSheetCollapsed((isCollapsed) => !isCollapsed);
     };
 
+    const handleAddExpenseEntry = () => {
+        router.push('/sheet/123/entry');
+    };
+
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -101,7 +107,6 @@ const home = ({}: Props) => {
                         return currentMarker ? (
                             <TouchableOpacity onPress={handleHeaderBack}>
                                 <FontAwesome
-                                    style={styles.searchIcon}
                                     name='chevron-left'
                                     size={24}
                                     color='#888'
@@ -111,23 +116,44 @@ const home = ({}: Props) => {
                     },
                 }}
             />
-
             <Map
                 mapRef={mapRef}
                 currentMarker={currentMarker}
                 // selectedPlaceDetails={}
                 handleAnimateToRegion={handleAnimateToRegion}
             />
-            {currentMarker && !isTracking && (
-                <View style={styles.buttonsContainer}>
+            {currentMarker &&
+                (!isTracking ? (
+                    <>
+                        <AppButton
+                            style={styles.startButton}
+                            size='medium'
+                            title='Start Expense Tracking'
+                            onPress={handleBeginTrackSpend}
+                        />
+                    </>
+                ) : (
                     <AppButton
-                        style={styles.startButton}
+                        style={styles.addButton}
                         size='medium'
-                        title='Track Spend'
-                        onPress={handleBeginTrackSpend}
+                        title={
+                            <FontAwesome
+                                name='plus'
+                                size={25}
+                                color={COLORS.light}
+                            />
+                        }
+                        onPress={handleAddExpenseEntry}
                     />
-                </View>
-            )}
+                ))}
+            <AppButton
+                style={styles.addButton}
+                size='medium'
+                title={
+                    <FontAwesome name='plus' size={25} color={COLORS.light} />
+                }
+                onPress={handleAddExpenseEntry}
+            />
             <BottomSheet
                 keyboardBehavior='extend'
                 ref={bottomSheetRef}
@@ -153,4 +179,4 @@ const home = ({}: Props) => {
     );
 };
 
-export default home;
+export default Home;

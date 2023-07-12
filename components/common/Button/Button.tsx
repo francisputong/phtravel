@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { TouchableOpacity, Text, TextStyle, ViewStyle } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+
 import styles from './buttons.style';
 import { COLORS } from '../../../constants';
 import { ButtonColor, ButtonSize } from './Button.types';
 import Typography from '../Typography/Typography';
 
 interface ButtonProps {
-    title: string;
+    title: ReactNode;
     onPress: () => void;
     color?: ButtonColor;
     size?: ButtonSize;
@@ -30,11 +32,14 @@ const Button: React.FC<ButtonProps> = ({
         getSizeStyle(size),
         style,
     ];
-    const textStyles = [textStyle || {}];
 
     return (
         <TouchableOpacity style={buttonStyles} onPress={onPress}>
-            <Typography color='light' variant='subheading' style={textStyles}>
+            <Typography
+                color='light'
+                variant='subheading'
+                style={[textStyle || {}]}
+            >
                 {title}
             </Typography>
         </TouchableOpacity>
