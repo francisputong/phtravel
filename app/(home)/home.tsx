@@ -169,6 +169,7 @@ const Home = ({}: Props) => {
             >
                 {bottomSheetContent === 'browse' ? (
                     <BrowsePrices
+                        isTracking={isTracking}
                         isBottomSheetCollapsed={isBottomSheetCollapsed}
                         handleBrowsePrices={handleBrowsePrices}
                         handleOpenSearch={handleOpenSearch}
