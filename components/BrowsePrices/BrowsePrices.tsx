@@ -26,7 +26,7 @@ const BrowsePrices = ({
                 />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleBrowsePrices}>
-                <Typography weight='Medium' variant='subheading'>
+                <Typography weight='Medium' color='light' variant='subheading'>
                     Browse Prices
                 </Typography>
             </TouchableOpacity>

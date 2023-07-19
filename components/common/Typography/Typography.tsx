@@ -4,7 +4,7 @@ import {
     TypographyColor,
     TypographyVariant,
     TypographyWeight,
-} from './Typohraphy.types';
+} from './Typography.types';
 import styles from './typography.style';
 import { COLORS } from '../../../constants';
 

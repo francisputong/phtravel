@@ -1,18 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    buttonsContainer: {
-        // position: 'absolute',
-        // bottom: 120,
-        // flex: 1,
-        // flexDirection: 'row',
-        // alignItems: 'center',
-        // alignSelf: 'center',
-        // justifyContent: 'space-between',
-        // width: '90%',
     },
     startButton: {
         position: 'absolute',
@@ -46,6 +37,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         alignSelf: 'center',
+    },
+    bottomSheetBackground: {
+        backgroundColor: COLORS.darkModeBackground,
+    },
+    bottomSheetHandleIndicator: {
+        backgroundColor: COLORS.darkGray,
     },
 });
 

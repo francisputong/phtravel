@@ -6,31 +6,26 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         overflow: 'hidden',
+        backgroundColor: COLORS.darkModeBackground,
         // position: 'relative',
         // zIndex: 1,
     },
     header: {
         width: '100%',
         borderBottomWidth: 0.5,
-        backgroundColor: '#fff',
     },
     headerWithBottomBorder: {
-        borderBottomColor: COLORS.divider,
-        shadowColor: COLORS.divider,
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.4,
-        shadowRadius: 3,
-        elevation: 5,
+        borderBottomColor: COLORS.gray,
     },
     headerWithoutBottomBorder: {
-        borderBottomColor: COLORS.light,
+        borderBottomColor: COLORS.darkModeBackground,
     },
     inputContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLORS.gray,
-        marginHorizontal: 20,
+        backgroundColor: COLORS.darkModeInputBackground,
+        marginHorizontal: 15,
         borderRadius: 30,
         marginBottom: 30,
     },
@@ -41,6 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         width: '100%',
+        color: COLORS.light,
     },
     dropdownContainer: {
         width: '100%',
@@ -48,9 +44,10 @@ const styles = StyleSheet.create({
     },
     dropdownItem: {
         paddingVertical: 15,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
+        marginHorizontal: 15,
         borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        borderBottomColor: COLORS.darkModePlaceholderColor,
     },
 });
 

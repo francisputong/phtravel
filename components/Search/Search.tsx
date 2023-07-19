@@ -19,6 +19,8 @@ import type {
     PlaceDetailsResult,
     PlacePrediction,
 } from '../../api/googlePlace/types';
+import Typography from '../common/Typography/Typography';
+import { COLORS } from '../../constants';
 
 type Props = {
     handleFocus: (isFocused: boolean) => void;
@@ -94,7 +96,7 @@ const Search = ({
                             <Ionicons
                                 name='chevron-back-sharp'
                                 size={24}
-                                color='#888'
+                                color={COLORS.darkModePlaceholderColor}
                                 style={styles.searchIcon}
                             />
                         </TouchableOpacity>
@@ -102,15 +104,14 @@ const Search = ({
                         <FontAwesome
                             name='search'
                             size={24}
-                            color='#888'
+                            color={COLORS.darkModePlaceholderColor}
                             style={styles.searchIcon}
                         />
                     )}
-
                     <BottomSheetTextInput
                         style={styles.input}
                         placeholder='Search for a place'
-                        placeholderTextColor='#C0C0C0'
+                        placeholderTextColor={COLORS.darkModePlaceholderColor}
                         onFocus={() => handleFocus(true)}
                         // onBlur={() => handleFocus(false)}
                         onChangeText={handleSearch}
@@ -118,7 +119,6 @@ const Search = ({
                     />
                 </View>
             </View>
-
             <FlatList
                 data={filteredData}
                 onScroll={handleScroll}
@@ -128,7 +128,9 @@ const Search = ({
                         style={styles.dropdownItem}
                         onPress={() => handleSelectItem(item)}
                     >
-                        <Text>{item.description}</Text>
+                        <Typography weight='Bold' color='light'>
+                            {item.description}
+                        </Typography>
                     </TouchableOpacity>
                 )}
                 style={styles.dropdownContainer}

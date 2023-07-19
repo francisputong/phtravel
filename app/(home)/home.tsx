@@ -13,6 +13,7 @@ import type { PlaceDetailsResult } from '../../api/googlePlace/types';
 import type { PlaceMarker } from '../../types';
 import BrowsePrices from '../../components/BrowsePrices/BrowsePrices';
 import { COLORS } from '../../constants';
+import Typography from '../../components/common/Typography/Typography';
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -96,10 +97,14 @@ const Home = ({}: Props) => {
             <Stack.Screen
                 options={{
                     headerTransparent: currentMarker ? false : true,
-                    headerTitle: currentMarker?.name || '',
+                    headerTitle: () => (
+                        <Typography weight='Bold' color='light'>
+                            {currentMarker?.name || ''}
+                        </Typography>
+                    ),
                     headerStyle: {
                         backgroundColor: currentMarker
-                            ? 'white'
+                            ? COLORS.darkModeBackground
                             : 'transparent',
                     },
                     headerTitleStyle: { color: 'black' },
@@ -109,7 +114,7 @@ const Home = ({}: Props) => {
                                 <FontAwesome
                                     name='chevron-left'
                                     size={24}
-                                    color='#888'
+                                    color={COLORS.darkModePlaceholderColor}
                                 />
                             </TouchableOpacity>
                         ) : null;
@@ -159,6 +164,8 @@ const Home = ({}: Props) => {
                 ref={bottomSheetRef}
                 index={0}
                 snapPoints={snapPoints}
+                handleIndicatorStyle={styles.bottomSheetHandleIndicator}
+                backgroundStyle={styles.bottomSheetBackground}
             >
                 {bottomSheetContent === 'browse' ? (
                     <BrowsePrices
