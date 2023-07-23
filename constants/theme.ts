@@ -9,10 +9,12 @@ const COLORS = {
     darkGray: '#3B4948', //#333333
     divider: '#E0E0E0',
     light: '#FFFFFF',
+    error: '#FF0000',
 
     darkModeBackground: '#2e2e2e',
     darkModeInputBackground: '#3d3d3d',
     darkModePlaceholderColor: '#999999',
+    darkModeModalBackground: '#1e1e1e',
 } as const;
 
 export { COLORS };
