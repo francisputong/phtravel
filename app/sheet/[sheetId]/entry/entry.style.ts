@@ -6,6 +6,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.darkModeBackground,
     },
+    content: {
+        paddingHorizontal: 15,
+    },
+    bottomSheetModal: {
+        backgroundColor: COLORS.darkModeModalBackground,
+    },
+    bottomSheetModalHandleIndicator: {
+        backgroundColor: COLORS.darkGray,
+    },
 });
 
 export default styles;

@@ -80,12 +80,17 @@ const Home = ({}: Props) => {
 
     const handleOpenSearch = () => {
         setBottomSheetContent('search');
-        setIsBottomSheetCollapsed((isCollapsed) => !isCollapsed);
+        setIsBottomSheetCollapsed(false);
     };
 
     const handleBrowsePrices = () => {
         setBottomSheetContent('browse');
         setIsBottomSheetCollapsed((isCollapsed) => !isCollapsed);
+    };
+
+    const handleSheetChanges = (index: number) => {
+        if (index === 0) handleBottomSheetCollapse();
+        else setIsBottomSheetCollapsed(false);
     };
 
     const handleAddExpenseEntry = () => {
@@ -166,6 +171,7 @@ const Home = ({}: Props) => {
                 snapPoints={snapPoints}
                 handleIndicatorStyle={styles.bottomSheetHandleIndicator}
                 backgroundStyle={styles.bottomSheetBackground}
+                onChange={handleSheetChanges}
             >
                 {bottomSheetContent === 'browse' ? (
                     <BrowsePrices
