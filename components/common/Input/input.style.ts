@@ -3,14 +3,12 @@ import { COLORS } from '../../../constants';
 
 const styles = StyleSheet.create({
     input: {
-        height: 40,
-        borderWidth: 1,
-        borderColor: COLORS.divider, // Light gray border color
+        width: '100%',
         borderRadius: 8,
         paddingHorizontal: 10,
         marginVertical: 8,
-        color: COLORS.darkGray, // Text color for input
-        backgroundColor: 'white', // White background color
+        color: COLORS.light, // Text color for input
+        backgroundColor: COLORS.darkModeInputBackground, // White background color
     },
 });
 
