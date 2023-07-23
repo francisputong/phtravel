@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.darkModeBackground,
     },
     inputContainer: {
+        height: 45,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: '100%',
         color: COLORS.light,
+        fontSize: 16,
     },
     dropdownContainer: {
         width: '100%',

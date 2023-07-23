@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     FlatList,
     TouchableOpacity,
@@ -92,49 +92,56 @@ const Search = ({
             >
                 <View style={[styles.inputContainer]}>
                     {!isBottomSheetCollapsed ? (
-                        <TouchableOpacity onPress={handleBottomSheetCollapse}>
-                            <Ionicons
-                                name='chevron-back-sharp'
+                        <View style={{ width: 40 }}>
+                            <TouchableOpacity
+                                onPress={handleBottomSheetCollapse}
+                            >
+                                <Ionicons
+                                    name='chevron-back-sharp'
+                                    size={24}
+                                    color={COLORS.darkModePlaceholderColor}
+                                    style={styles.searchIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={{ width: 40 }}>
+                            <FontAwesome
+                                name='search'
                                 size={24}
                                 color={COLORS.darkModePlaceholderColor}
                                 style={styles.searchIcon}
                             />
-                        </TouchableOpacity>
-                    ) : (
-                        <FontAwesome
-                            name='search'
-                            size={24}
-                            color={COLORS.darkModePlaceholderColor}
-                            style={styles.searchIcon}
-                        />
+                        </View>
                     )}
                     <BottomSheetTextInput
                         style={styles.input}
                         placeholder='Search for a place'
                         placeholderTextColor={COLORS.darkModePlaceholderColor}
                         onFocus={() => handleFocus(true)}
-                        // onBlur={() => handleFocus(false)}
                         onChangeText={handleSearch}
                         value={searchText}
                     />
                 </View>
             </View>
-            <FlatList
-                data={filteredData}
-                onScroll={handleScroll}
-                keyExtractor={(item) => item.place_id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.dropdownItem}
-                        onPress={() => handleSelectItem(item)}
-                    >
-                        <Typography weight='Bold' color='light'>
-                            {item.description}
-                        </Typography>
-                    </TouchableOpacity>
-                )}
-                style={styles.dropdownContainer}
-            />
+            {filteredData.length > 0 && (
+                <FlatList
+                    data={filteredData}
+                    onScroll={handleScroll}
+                    keyExtractor={(item) => item.place_id}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={styles.dropdownItem}
+                            onPress={() => handleSelectItem(item)}
+                        >
+                            <Typography weight='Bold' color='light'>
+                                {item.description}
+                            </Typography>
+                        </TouchableOpacity>
+                    )}
+                    style={styles.dropdownContainer}
+                />
+            )}
         </View>
     );
 };

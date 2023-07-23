@@ -37,6 +37,8 @@ const getVariant = (variant: TypographyVariant) => {
             return styles.heading;
         case 'subheading':
             return styles.subheading;
+        case 'subtext':
+            return styles.subtext;
         case 'body':
         default:
             return styles.body;
