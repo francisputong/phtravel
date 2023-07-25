@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { ClickOutsideProvider } from 'react-native-click-outside';
 
 const Layout = () => {
     const [fontsLoaded] = useFonts({
@@ -13,24 +14,26 @@ const Layout = () => {
     }
 
     return (
-        <Stack initialRouteName='home'>
-            <Stack.Screen
-                name='sheet/index'
-                options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen
-                name='sheet/[sheetId]/index'
-                options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen
-                name='sheet/[sheetId]/entry/index'
-                options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen
-                name='sheet/[sheetId]/entry/[entryId]/index'
-                options={{ presentation: 'modal' }}
-            />
-        </Stack>
+        <ClickOutsideProvider>
+            <Stack initialRouteName='home'>
+                <Stack.Screen
+                    name='sheet/index'
+                    options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen
+                    name='sheet/[sheetId]/index'
+                    options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen
+                    name='sheet/[sheetId]/entry/index'
+                    options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen
+                    name='sheet/[sheetId]/entry/[entryId]/index'
+                    options={{ presentation: 'modal' }}
+                />
+            </Stack>
+        </ClickOutsideProvider>
     );
 };
 

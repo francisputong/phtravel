@@ -14,7 +14,7 @@ const Input: FC<CustomInputProps> = ({ style, error, multiline, ...rest }) => {
     const inputStyles = [styles.input, style, { height: multiline ? 120 : 40 }];
 
     return (
-        <>
+        <View style={styles.inputContainer}>
             <TextInput
                 multiline={multiline}
                 numberOfLines={multiline ? 4 : 1}
@@ -27,7 +27,7 @@ const Input: FC<CustomInputProps> = ({ style, error, multiline, ...rest }) => {
                     {error.message}
                 </Typography>
             )}
-        </>
+        </View>
     );
 };
 

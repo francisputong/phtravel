@@ -11,10 +11,10 @@ import AppButton from '../../../../components/common/Button';
 import { structure, validationSchema, EntryDetails } from './formStructure';
 import AppPicker from '../../../../components/common/Picker/Picker';
 import {
-    BottomSheetBackdrop,
     BottomSheetModal,
     BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
+import { useClickOutside } from 'react-native-click-outside';
 
 type Props = {};
 
@@ -31,8 +31,6 @@ const Entry = (props: Props) => {
 
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-    const snapPoints = useMemo(() => [250], []);
-
     const onSubmit = (data: EntryDetails) => {
         console.log(data);
     };
@@ -41,6 +39,10 @@ const Entry = (props: Props) => {
         bottomSheetModalRef.current?.present();
         Keyboard.dismiss();
     }, []);
+
+    const ref = useClickOutside<View>(() =>
+        bottomSheetModalRef.current?.close()
+    );
 
     return (
         <BottomSheetModalProvider>
@@ -116,14 +118,16 @@ const Entry = (props: Props) => {
                                                         }
                                                     />
                                                 </TouchableOpacity>
-                                                <AppPicker
-                                                    innerRef={
-                                                        bottomSheetModalRef
-                                                    }
-                                                    list={CATEGORIES}
-                                                    value={value}
-                                                    onValueChange={onChange}
-                                                />
+                                                <View ref={ref}>
+                                                    <AppPicker
+                                                        innerRef={
+                                                            bottomSheetModalRef
+                                                        }
+                                                        list={CATEGORIES}
+                                                        value={value}
+                                                        onValueChange={onChange}
+                                                    />
+                                                </View>
                                             </>
                                         );
                                     }
