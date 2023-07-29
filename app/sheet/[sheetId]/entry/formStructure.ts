@@ -5,6 +5,7 @@ export type EntryDetails = {
     cost: string;
     notes: string | undefined;
     category: string;
+    image: string | undefined;
 };
 
 type Structure = {
@@ -12,7 +13,7 @@ type Structure = {
     placeholder: string;
     defaultValue: string;
     keyboardType?: KeyboardTypeOptions;
-    type: 'text' | 'textarea' | 'picker';
+    type: 'text' | 'textarea' | 'picker' | 'imagepicker';
 }[];
 
 export const validationSchema = yup.object().shape({
@@ -22,6 +23,7 @@ export const validationSchema = yup.object().shape({
         .required('Cost is required'),
     notes: yup.string().max(150, 'Notes must not exceed 150 characters'),
     category: yup.string().required('Please select a category'),
+    image: yup.string(),
 });
 
 export const structure: Structure = [
@@ -43,5 +45,11 @@ export const structure: Structure = [
         placeholder: 'Category',
         defaultValue: '',
         type: 'picker',
+    },
+    {
+        name: 'image',
+        placeholder: 'Add Image',
+        defaultValue: '',
+        type: 'imagepicker',
     },
 ];
