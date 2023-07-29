@@ -1,43 +1,64 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Picker } from '@react-native-picker/picker';
-import styles from './picker.style';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import AppBottomSheetModal from '../BottomSheetModal';
+import { Keyboard, TouchableOpacity } from 'react-native';
+import Input from '../Input';
+import styles from './picker.style';
+import { FieldError } from 'react-hook-form';
 
 interface PickerProps {
     value?: string;
     onValueChange: (value: string) => void;
     list: string[];
-    innerRef: React.RefObject<BottomSheetModalMethods>;
+    placeholder?: string;
+    error: FieldError | undefined;
 }
 
 const AppPicker: React.FC<PickerProps> = ({
     value,
     list,
-    innerRef,
+    placeholder,
+    error,
     onValueChange,
 }) => {
-    const snapPoints = useMemo(() => [250], []);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+        Keyboard.dismiss();
+    }, []);
 
     return (
-        <BottomSheetModal
-            backgroundStyle={styles.bottomSheetModal}
-            handleIndicatorStyle={styles.bottomSheetModalHandleIndicator}
-            ref={innerRef}
-            index={0}
-            snapPoints={snapPoints}
-        >
-            <Picker
-                style={styles.picker}
-                itemStyle={styles.options}
-                selectedValue={value}
-                onValueChange={onValueChange}
+        <>
+            <TouchableOpacity onPress={handlePresentModalPress}>
+                <Input
+                    pointerEvents='none'
+                    editable={false}
+                    value={value}
+                    placeholder={placeholder}
+                    error={error}
+                />
+            </TouchableOpacity>
+            <AppBottomSheetModal
+                snapPoints={[250]}
+                innerRef={bottomSheetModalRef}
             >
-                {list.map((item) => {
-                    return <Picker.Item key={item} label={item} value={item} />;
-                })}
-            </Picker>
-        </BottomSheetModal>
+                <Picker
+                    style={styles.picker}
+                    itemStyle={styles.options}
+                    selectedValue={value}
+                    onValueChange={onValueChange}
+                >
+                    {list.map((item) => {
+                        return (
+                            <Picker.Item key={item} label={item} value={item} />
+                        );
+                    })}
+                </Picker>
+            </AppBottomSheetModal>
+        </>
     );
 };
 
