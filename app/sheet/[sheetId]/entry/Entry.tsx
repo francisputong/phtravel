@@ -1,20 +1,21 @@
 import { Stack, useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { View, TouchableOpacity, Keyboard } from 'react-native';
+import React, { useRef } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import {
+    BottomSheetModal,
+    BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 import { yupResolver } from '@hookform/resolvers/yup';
-import styles from './entry.style';
 import Typography from '../../../../components/common/Typography';
 import Input from '../../../../components/common/Input';
 import { CATEGORIES, COLORS } from '../../../../constants';
 import AppButton from '../../../../components/common/Button';
 import { structure, validationSchema, EntryDetails } from './formStructure';
-import AppPicker from '../../../../components/common/Picker/Picker';
-import {
-    BottomSheetModal,
-    BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
-import { useClickOutside } from 'react-native-click-outside';
+import AppPicker from '../../../../components/common/Picker';
+import AppImagePicker from '../../../../components/common/ImagePicker';
+import Container from '../../../../components/common/Container';
+import styles from './entry.style';
 
 type Props = {};
 
@@ -35,18 +36,9 @@ const Entry = (props: Props) => {
         console.log(data);
     };
 
-    const handlePresentModalPress = useCallback(() => {
-        bottomSheetModalRef.current?.present();
-        Keyboard.dismiss();
-    }, []);
-
-    const ref = useClickOutside<View>(() =>
-        bottomSheetModalRef.current?.close()
-    );
-
     return (
         <BottomSheetModalProvider>
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <Stack.Screen
                     options={{
                         headerStyle: {
@@ -98,38 +90,18 @@ const Entry = (props: Props) => {
                                                 error={errors[data.name]}
                                             />
                                         );
-                                    } else {
+                                    } else if (data.type === 'picker') {
                                         return (
-                                            <>
-                                                <TouchableOpacity
-                                                    onPress={
-                                                        handlePresentModalPress
-                                                    }
-                                                >
-                                                    <Input
-                                                        pointerEvents='none'
-                                                        editable={false}
-                                                        value={value}
-                                                        placeholder={
-                                                            data.placeholder
-                                                        }
-                                                        error={
-                                                            errors[data.name]
-                                                        }
-                                                    />
-                                                </TouchableOpacity>
-                                                <View ref={ref}>
-                                                    <AppPicker
-                                                        innerRef={
-                                                            bottomSheetModalRef
-                                                        }
-                                                        list={CATEGORIES}
-                                                        value={value}
-                                                        onValueChange={onChange}
-                                                    />
-                                                </View>
-                                            </>
+                                            <AppPicker
+                                                error={errors[data.name]}
+                                                placeholder={data.placeholder}
+                                                list={CATEGORIES}
+                                                value={value}
+                                                onValueChange={onChange}
+                                            />
                                         );
+                                    } else {
+                                        return <AppImagePicker />;
                                     }
                                 }}
                                 name={data.name}
@@ -143,7 +115,7 @@ const Entry = (props: Props) => {
                         onPress={handleSubmit(onSubmit)}
                     />
                 </View>
-            </View>
+            </Container>
         </BottomSheetModalProvider>
     );
 };

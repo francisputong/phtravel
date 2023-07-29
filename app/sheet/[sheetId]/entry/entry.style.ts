@@ -5,9 +5,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.darkModeBackground,
+        padding: 15,
     },
     content: {
-        paddingHorizontal: 15,
+        // padding: 15,
     },
     bottomSheetModal: {
         backgroundColor: COLORS.darkModeModalBackground,
