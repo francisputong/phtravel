@@ -3,10 +3,11 @@ import { Picker } from '@react-native-picker/picker';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import AppBottomSheetModal from '../BottomSheetModal';
-import { Keyboard, TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 import Input from '../Input';
 import styles from './picker.style';
 import { FieldError } from 'react-hook-form';
+import { useClickOutside } from 'react-native-click-outside';
 
 interface PickerProps {
     value?: string;
@@ -24,6 +25,10 @@ const AppPicker: React.FC<PickerProps> = ({
     onValueChange,
 }) => {
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+    const clickOutsideRef = useClickOutside<View>(() =>
+        bottomSheetModalRef.current?.close()
+    );
 
     const handlePresentModalPress = useCallback(() => {
         bottomSheetModalRef.current?.present();
@@ -43,6 +48,7 @@ const AppPicker: React.FC<PickerProps> = ({
             </TouchableOpacity>
             <AppBottomSheetModal
                 snapPoints={[250]}
+                clickOutsideRef={clickOutsideRef}
                 innerRef={bottomSheetModalRef}
             >
                 <Picker
