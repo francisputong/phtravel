@@ -17,6 +17,10 @@ const Layout = () => {
         <ClickOutsideProvider>
             <Stack initialRouteName='home'>
                 <Stack.Screen
+                    name='camera/index'
+                    options={{ presentation: 'fullScreenModal' }}
+                />
+                <Stack.Screen
                     name='sheet/index'
                     options={{ presentation: 'modal' }}
                 />
