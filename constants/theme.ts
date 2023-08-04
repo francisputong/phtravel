@@ -10,6 +10,7 @@ const COLORS = {
     divider: '#E0E0E0',
     light: '#FFFFFF',
     error: '#FF0000',
+    black: '#000000',
 
     darkModeBackground: '#2e2e2e',
     darkModeInputBackground: '#3d3d3d',
